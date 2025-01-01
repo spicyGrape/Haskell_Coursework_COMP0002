@@ -1,3 +1,5 @@
+import Data.Fixed (E0)
+import Distribution.SPDX (LicenseId(MPL_2_0))
 type Horse = [String]
 
 horse :: Horse
@@ -32,6 +34,20 @@ rotate180 = transpose . transpose
 
 rotate270 :: Horse -> Horse
 rotate270 = transpose . transpose . transpose
+
+tribCons :: Int -> [Int] -> [Int]
+tribCons 0 xs = xs
+tribCons n (a:b:c:xs) = tribCons (n-1) ((a+b+c):a:b:c:xs)
+
+tribonacci :: Int -> [Int]
+tribonacci 0 = []
+tribonacci 1 = [0] 
+tribonacci 2 = [0,0] 
+tribonacci 3 = [0,0,1]
+tribonacci n = reverse $ tribCons (n-3) [1,0,0]
+
+lcs :: Int -> [Int]
+lcs n = map (\x -> (x*x + x + 2) `div` 2) [0..n]
 
 -- To visualize the Horse as an image of horse.
 pretty :: Horse -> IO()
