@@ -1,12 +1,10 @@
-import Data.Fixed (E0)
-import Distribution.SPDX (LicenseId(MPL_2_0))
 type Horse = [String]
 
 horse :: Horse
-horse =[ "   ,//)     ",
+horse =[ "   ,//)    ",
          "   ;;' \\   ",
          ",;;' ( '\\  ",
-         "    / '\\-)"]
+         "    / '\\-) "]
 
 -- A number Horse, making test and verification easier.
 numberHorse :: Horse
@@ -35,10 +33,13 @@ rotate180 = transpose . transpose
 rotate270 :: Horse -> Horse
 rotate270 = transpose . transpose . transpose
 
+-- Helper function for tribonacci. Constructing the tribonacci sequence in the \
+-- reversed order.
 tribCons :: Int -> [Int] -> [Int]
 tribCons 0 xs = xs
 tribCons n (a:b:c:xs) = tribCons (n-1) ((a+b+c):a:b:c:xs)
 
+-- Generate tribonacci sequence to the n th term.
 tribonacci :: Int -> [Int]
 tribonacci 0 = []
 tribonacci 1 = [0] 
@@ -46,6 +47,7 @@ tribonacci 2 = [0,0]
 tribonacci 3 = [0,0,1]
 tribonacci n = reverse $ tribCons (n-3) [1,0,0]
 
+-- Generate the LC sequence. Starting from 0th term, to n th term.
 lcs :: Int -> [Int]
 lcs n = map (\x -> (x*x + x + 2) `div` 2) [0..n]
 
@@ -56,3 +58,17 @@ pretty [h]    = do
 pretty (h:hs) = do
                     putStrLn h
                     pretty hs
+
+-- repeat the horse multiple times on the horizontal direction.
+repeatHorse :: Horse -> Int -> Horse
+repeatHorse h n = foldl (zipWith (++)) (map (const []) h) $ map (const h) [1..n]
+
+horseSeq :: (Int -> [Int]) -> Int -> Horse -> IO()
+horseSeq f n h = putHorseSeq (f n) h 
+    where 
+    putHorseSeq [x] h = do
+                        pretty (repeatHorse h x)
+    putHorseSeq (x:xs) h = do
+                           pretty (repeatHorse h x)
+                           putHorseSeq xs h
+
