@@ -72,3 +72,11 @@ horseSeq f n h = putHorseSeq (f n) h
                            pretty (repeatHorse h x)
                            putHorseSeq xs h
 
+shead :: [a] -> Maybe a
+shead [] = Nothing
+shead (x:_) = Just x
+
+stail :: [a] -> Maybe [a]
+stail [] = Nothing
+stail (_:xs) = Just xs
+
