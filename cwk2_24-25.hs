@@ -13,13 +13,15 @@ numberHorse = ["123",
                "789"]
 
 -- Rotate the Horse by 90 degree to the right
--- Process the Horse row by row.
+-- Although it is actually rotating the Horse, it is called transpose, as \
+-- required by the coursework specification.
+-- Process the source Horse row by row. Construct the new Horse column by column
 transpose :: Horse -> Horse
 transpose = foldl transposeHorse (repeat []) 
 
 -- Helper function for transpose. 
 -- Take a row of the Horse at a time. Add each of the character in the row to \
--- the front of rows in the transposed Horse.
+-- the first column in the transposed Horse.
 transposeHorse :: Horse -> String -> Horse
 transposeHorse transposed sourse = zipWith (:) sourse transposed
 
